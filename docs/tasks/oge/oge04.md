@@ -15,7 +15,7 @@
  
 Между населёнными пунктами <i>A, B, C, D, E</i> построены дороги, протяжённость которых (в километрах) приведена в таблице.
 
-<table align="center" border="1" cellpadding="1" cellspacing="1">
+<table align="center">
 	<tbody>
 		<tr>
 			<td bgcolor="#CCCCFF">&nbsp;</td>
