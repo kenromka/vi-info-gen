@@ -1,0 +1,17 @@
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} -  информатика</title>
+      {% else %}
+      <title>Информатика</title>
+      {% endif %}
+    </head>
+    <body>
+        <div><a href={{ url_for("ege") }}>ЕГЭ</a></div>
+	<div><a href={{ url_for("oge") }}>ОГЭ</a></div>
+	<hr>
+        {% block content %}{% endblock %}
+	<hr>
+	<div><p>Last update:	{{ date }}</p></div>
+    </body>
+</html>

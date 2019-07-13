@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style>
+     
+    form#tree label {
+      display: block;
+    }
+     
+    /* для fieldset внутри нашей формы укажем отступы и border - временно, для наглядности */
+    form#tree fieldset {
+      width: auto;
+      height: auto;
+      margin: 5px 0 5px 15px;
+      padding: 0;
+      /*border: solid 1px black;*/
+      border:0;
+    }
+     
+    /* теперь опишем класс для свернутого fieldset */
+    form#tree fieldset.closed {
+      margin: 5px 0 5px 15px;
+      padding: 0;
+      /*border: solid 1px black;*/
+      border:0;
+      display:none;
+    }
+     
+    /* стили для legend, в которых у нас будет +/- */
+    form#tree fieldset legend {
+      margin: 0 0 -23px -15px;
+      width: auto;
+      font-size:16pt;
+      border:0;
+      cursor:pointer;
+    }
+
+    #subtypes {
+      text-align: right;
+    }
+
+    .hidden{
+      visibility:hidden;
+    }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+     
+    <script>
+     
+        $(function() { 
+          $('form#tree legend').on('click', function() { 
+              
+              
+              if ($(this).text() == "+") {$(this).text("−");}
+              else {$(this).text("+");}
+              
+              var currthread = $(this).parent("fieldset"); 
+              $(currthread).children("fieldset").toggleClass("closed"); 
+            });
+            
+
+          $("input:checkbox").on('change', function() { 
+            try {
+              if ($(this)[0].className == "level") {
+                var tasks_lbl = $("label[name=q]".replace("q", $(this)[0].name));
+                for (var key in tasks_lbl) {
+                  if (!isNaN(parseInt(key))) {
+                    if ($(this)[0].checked) {
+                      tasks_lbl[key].className="";
+                      tasks_lbl[key].children.subtype.disabled = false;
+                    } else {
+                      tasks_lbl[key].children.subtype.checked = false;
+                      tasks_lbl[key].children.subtype.disabled = true;
+                      tasks_lbl[key].className = "hidden";
+                      
+                    }
+                  }
+                }
+              }
+              else {
+                var currcheck = $(this).closest("fieldset").has("fieldset");
+                  //отмечаем или снимаем отметку с детей      
+                  if ($(this).prop("checked") == true){
+                    $(currcheck).find("input:checkbox").prop({"checked":true, "indeterminate":false}); 
+                  } else {
+                    $(currcheck).find("input:checkbox").prop({"checked":false, "indeterminate":false});
+                  }
+              
+                  $(this).parentsUntil( $("form#tree"), "fieldset").has("fieldset").each(function(){
+                      
+                      var chkbx = $(this).find("input:checkbox").not(":first"); //выбираем всех чекбоксов-детей-внуков и т.д.
+                      var chkd = $(chkbx).filter("input:checkbox:checked"); //выбираем чекнутые чекбоксы среди полученного набора
+                      
+                      if (chkbx.length != 0) {
+                        if (chkd.length == chkbx.length) {
+                            $(this).find("input:checkbox:first").prop({"indeterminate":false, "checked":true});
+                        }
+                          
+                        else if (chkd.length == 0) { 
+                            $(this).find("input:checkbox:first").prop({"indeterminate":false, "checked":false});
+                        }
+                          
+                        else if (chkd.length < chkbx.length) {
+                            $(this).find("input:checkbox:first").prop({"indeterminate":true, "checked":false});
+                        }
+
+                      }
+                      
+                    });
+      
+                  $(this).parentsUntil( $("form#tree"), ".0").has("fieldset").each(function(){
+                  var all_chk = $(this).find("input:checkbox");
+                  for (var key in all_chk) {
+                      try {
+                        if(all_chk[key].checked || all_chk[key].indeterminate){
+                          all_chk[key].nextSibling.nextSibling.style.display='';
+                          all_chk[key].nextSibling.nextSibling.class=""
+                          }
+                        else {
+                          all_chk[key].nextSibling.nextSibling.style.display='none';  
+                          all_chk[key].nextSibling.nextSibling.value='';
+                          all_chk[key].nextSibling.nextSibling.class=""
+                          }
+                      }
+                      catch (err){
+                        ;
+                      }
+                    }
+                  });
+            }
+    
+          } catch (err){
+            console.log(err);
+          }
+          });
+              
+        });
+        </script>
+
+    <div>
+      <div>Уровень: 
+        <label>легкий<input type="checkbox" class="level" name="ez" checked=true></label>
+        <label>средний<input type="checkbox" class="level" name="mid" checked=true></label>
+        <label>сложный<input type="checkbox" class="level" name="hard" checked=true></label>
+      </div>
+      <form id="tree" action="" method="post" role="form">
+        {% for key, number in tasks.items() %}
+        <table width="100%" cellspacing="0" cellpadding="4">
+          <fieldset class="0">
+            <fieldset name="1"><legend>+</legend>
+                <label><input type="checkbox" name="task">{{ key }}<!--&nbsp;&nbsp;<input name="{{ key|replace(' ', '-')|replace(',', '-') }}" type="text" onkeypress="allowNumbersOnly(event)" size=5 style="display:block; display:none;">--></label>
+                {% for key2, type in number[0].items() %}
+                    <fieldset name="2" class="closed"><legend>+</legend>
+                        <label><input type="checkbox" name="type">{{ key2 }}<!--&nbsp;&nbsp;<input class="{{ key|replace(' ', '-')|replace(',', '-') }}" name="{{ key2|replace(' ', '-')|replace(',', '-') }}" onkeypress="allowNumbersOnly(event)" type="text" size=5 style="display:block; display:none;">--></label>
+                        {% for classname, subtype in type.items() %}
+                            <fieldset name="3" class="closed">
+                                <label name="{{ subtype[1] }}" class="" for="{{ classname }}"><input class="closed" type="checkbox" value="{{ subtype[0] }}" name="subtype">{{ subtype[0] }} ({%- if subtype[1] == 'ez' -%} легкий {%- elif subtype[1] == 'mid' -%} средний {%- else -%} сложный{% endif %})</label>
+                            </fieldset>
+                        {% endfor %}
+                    </fieldset>
+                {% endfor %}
+            </fieldset>
+          </fieldset>
+        </table>
+        {% endfor %}
+        <input type="submit" name="btn" value="подтвердить">
+      </form>
+    </div>
+{% endblock %}

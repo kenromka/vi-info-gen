@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    div#subtype {
+      margin-left:10em;
+    }
+    div#type {
+      margin-left:5em;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script>
+    function allowNumbersOnly(e) {
+        var code = (e.which) ? e.which : e.keyCode;
+        if (code > 31 && (code < 48 || code > 57)) {
+            e.preventDefault();
+        }
+    }
+</script>
+<script type="text/javascript">
+    
+    function div(val, by){
+        return (val - val % by) / by;
+    }
+    
+        $(function() {
+          $("input:text").on("change", function(){
+            // при изменении общего кол-ва пересчитать поровну
+            if ($(this)[0].id == "head") {
+                var obj = $("input:text.task");
+                for (var key in obj) {
+                    if (!isNaN(parseInt(key))) {
+                        var l = parseInt(obj.length);
+                        var v = parseInt($(this)[0].value);
+                        if (key < v%l) {
+                            obj[key].value = div(v, l) + 1;
+                        }
+                        else {
+                            obj[key].value = div(v, l);
+                        }
+                        
+                        var task_lbl = obj[key].previousElementSibling.textContent.replace(/ /g, '-').replace(',', '-').replace('.', '-');
+                        var task_obj = $("input:text[name=q]".replace("q", task_lbl));
+                        for (var task_key in task_obj) {
+                            if (!isNaN(parseInt(task_key))) {
+                                var l = parseInt(task_obj.length);
+                                var v = parseInt(obj[key].value);
+                                if (task_key < v%l) {
+                                    task_obj[task_key].value = div(v, l) + 1;
+                                }
+                                else {
+                                    task_obj[task_key].value = div(v, l);
+                                }
+                                var type_lbl = task_obj[task_key].previousElementSibling.textContent.replace(/ /g, '-').replace(',', '-').replace('.', '-');
+                                var type_obj = $("label[name=q]".replace("q", type_lbl));
+                                for (var type_key in type_obj) {
+                                    if (!isNaN(parseInt(type_key))) {
+                                        var l = parseInt(type_obj.length);
+                                        var v = parseInt(task_obj[task_key].value);
+                                        if (type_key < v%l) {
+                                            type_obj[type_key].nextElementSibling.value = div(v, l) + 1;
+                                        }
+                                        else {
+                                            type_obj[type_key].nextElementSibling.value = div(v, l);
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            //количество в задании
+            else if ($(this)[0].className == "task")
+            {
+                var task_lbl = $(this)[0].previousElementSibling.textContent.replace(/ /g, '-').replace(',', '-').replace('.', '-');
+                var task_obj = $("input:text[name=q]".replace("q", task_lbl));
+                for (var task_key in task_obj) {
+                    if (!isNaN(parseInt(task_key))) {
+                        var l = parseInt(task_obj.length);
+                        var v = parseInt($(this)[0].value);
+                        if (task_key < v%l) {
+                            task_obj[task_key].value = div(v, l) + 1;
+                        }
+                        else {
+                            task_obj[task_key].value = div(v, l);
+                        }
+                        var type_lbl = task_obj[task_key].previousElementSibling.textContent.replace(/ /g, '-').replace(',', '-').replace('.', '-');
+                        var type_obj = $("label[name=q]".replace("q", type_lbl));
+                        for (var type_key in type_obj) {
+                            if (!isNaN(parseInt(type_key))) {
+                                var l = parseInt(type_obj.length);
+                                var v = parseInt(task_obj[task_key].value);
+                                if (type_key < v%l) {
+                                    type_obj[type_key].nextElementSibling.value = div(v, l) + 1;
+                                }
+                                else {
+                                    type_obj[type_key].nextElementSibling.value = div(v, l);
+                                }
+
+                            }
+                        }
+                    }
+                }
+                // общее количество
+                var all_tasks = $("input:text.task");
+                var sum = 0;
+                for (var key in all_tasks) {
+                    if (!isNaN(parseInt(key))) {
+                        sum += parseInt(all_tasks[key].value);
+                    }
+                }
+                $("input:text#head")[0].value = sum;
+            }
+            // тип
+            else if ($(this)[0].className == "type") {
+                var type_lbl = $(this)[0].previousElementSibling.textContent.replace(/ /g, '-').replace(',', '-').replace('.', '-');
+                var type_obj = $("label[name=q]".replace("q", type_lbl));
+                for (var type_key in type_obj) {
+                    if (!isNaN(parseInt(type_key))) {
+                        var l = parseInt(type_obj.length);
+                        var v = parseInt($(this)[0].value);
+                        if (type_key < v%l) {
+                            type_obj[type_key].nextElementSibling.value = div(v, l) + 1;
+                        }
+                        else {
+                            type_obj[type_key].nextElementSibling.value = div(v, l);
+                        }
+
+                    }
+                }
+
+                // задачи и общее количество
+                var all_tasks = $("input:text.task");
+                var sum = 0;
+                for (var key in all_tasks) {
+                    if (!isNaN(parseInt(key))) {
+                        if (all_tasks[key].previousElementSibling.textContent.replace(/ /g, '-').replace(',', '-').replace('.', '-') == $(this)[0].name) {
+                            var local_sum = 0;
+                            var all_types = $("input:text[name=q]".replace("q", $(this)[0].name));
+                            for (var task_key in all_types) {
+                                if (!isNaN(parseInt(task_key))) {
+                                    local_sum += parseInt(all_types[task_key].value);
+                                }
+                            }
+                            all_tasks[key].value = local_sum;
+                        }
+                        sum += parseInt(all_tasks[key].value);
+                    }
+                }
+                $("input:text#head")[0].value = sum;
+            }
+            else if ($(this)[0].className == "subtype") {
+                // типы, задачи и общее количество
+                var all_tasks = $("input:text.task");
+                var sum = 0;
+                for (var key in all_tasks) {
+                    if (!isNaN(parseInt(key))) {
+                            var all_types = $("input:text[name=q]".replace("q", all_tasks[key].previousElementSibling.textContent.replace(/ /g, '-').replace(',', '-').replace('.', '-')));
+                            var type_sum = 0;
+                            for (var task_key in all_types) {
+                                if (!isNaN(parseInt(task_key))) {
+                                    if (all_types[task_key].previousElementSibling.textContent.replace(/ /g, '-').replace(',', '-').replace('.', '-') == $(this)[0].previousElementSibling.attributes.name.value) {
+                                        var all_subtypes = $("label[name=q]".replace("q", $(this)[0].previousElementSibling.attributes.name.value));
+                                        var subtype_sum = 0;
+                                        for (var type_key in all_subtypes) {
+                                            if (!isNaN(parseInt(type_key))) {
+                                                subtype_sum += parseInt(all_subtypes[type_key].nextElementSibling.value);
+                                            }
+                                        }
+                                        
+                                        all_types[task_key].value = subtype_sum;
+                                    }
+                                    type_sum += parseInt(all_types[task_key].value);
+                                }
+                            }
+                            all_tasks[key].value = type_sum;
+                            sum += parseInt(all_tasks[key].value);
+                        }
+                    }
+                $("input:text#head")[0].value = sum;
+            }
+          });
+          
+        });
+</script>
+<form id="quantity" action="" method="post" role="form">
+        <div>Общее количество: <input id="head" type="text" value="0" onkeypress="allowNumbersOnly(event)"></div>
+        <hr>
+        <div>Ответы: <input value="ans_yes" name='answers' type="radio" checked>Да <input value="ans_no" name='answers' type="radio">Нет <input value="ans_end" name='answers' type="radio">В конце</div>
+        <hr>
+        <div>Заголовки нужны: <input name="headers" type="checkbox" checked></div>
+        <hr>
+        {% for task, task_dict in tasks.items() %}
+            <div id="task">&sect; <label>{{ task }}</label><input class="task" type="text" value="0" onkeypress="allowNumbersOnly(event)">
+                {%if "proglang" in task_dict[1] %}
+                Python<input class="proglang" name="python{{ task }}" type="checkbox" checked="">
+                C++<input class="proglang" name="cpplus{{ task }}" type="checkbox" checked="">
+                Pascal<input class="proglang" name="pascal{{ task }}" type="checkbox" checked="">
+                Basic<input class="proglang" name="qbasic{{ task }}" type="checkbox" checked="">
+                Algo<input class="proglang" name="algori{{ task }}" type="checkbox" checked="">
+                {% endif %}
+            </div>
+            {% for typo, typo_dict in task_dict[0].items() %}
+                <div id="type">&bull;  <label>{{ typo }}</label> <input class="type" type="text" value="0" onkeypress="allowNumbersOnly(event)" name="{{ task|replace(' ', '-')|replace(',', '-') }}"></div>
+                {% for subtype, subtype_name in typo_dict.items() %}
+                    <div id="subtype">&#9997; <label name="{{ typo|replace(' ', '-')|replace(',', '-') }}">{{ subtype_name[0] }}</label> <input class="subtype" type="text" value="0" onkeypress="allowNumbersOnly(event)" name="{{ subtype_name[0] }}">
+                        <label name="max_qty"> (max: {{ subtype_name[2] }})</label>
+                        <label name="level">({%- if subtype_name[1] == 'ez' -%} легкий {%- elif subtype_name[1] == 'mid' -%} средний {%- else -%} сложный{% endif %})</label>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <hr>
+        {% endfor %}
+    <hr>
+    <input type="submit" name="btn" value="скачать">
+</form>
+{% endblock %}
