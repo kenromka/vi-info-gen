@@ -41,6 +41,18 @@ class BaseTask:
 		question.appendChild(answer)
 		return question
 
+	@property
+	def get_task_num(self):
+		return 0
+	
+	@property
+	def get_type_num(self):
+		return 0
+	
+	@property
+	def get_subtype_num(self):
+		return 0
+	
 	@staticmethod
 	def question_type():
 		"""Тип вопроса.
@@ -106,6 +118,18 @@ class BaseTaskOge:
 		answer.appendChild(text)
 		question.appendChild(answer)
 		return question
+	
+	@property
+	def get_task_num(self):
+		return 0
+	
+	@property
+	def get_type_num(self):
+		return 0
+	
+	@property
+	def get_subtype_num(self):
+		return 0
 
 	@staticmethod
 	def question_type():

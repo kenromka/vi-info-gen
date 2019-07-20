@@ -17,6 +17,10 @@ class Type1(Task9):
     def category(self):
         return "Цикл while"
     
+    @property
+    def get_type_num(self):
+        return 1
+    
     def level(self):
         return "hard"
 
@@ -128,6 +132,10 @@ class SubtypeA(Type1):
 
     def category(self):
         return "Цикл while"
+    
+    @property
+    def get_subtype_num(self):
+        return 1
 
     @property
     def max_qty(self):

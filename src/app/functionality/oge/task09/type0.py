@@ -17,6 +17,10 @@ class Type0(Task9):
     def category(self):
         return "Цикл for"
     
+    @property
+    def get_type_num(self):
+        return 1
+	
     def level(self):
         return "ez"
 
@@ -108,6 +112,10 @@ class SubtypeA(Type0):
 
     def category(self):
         return "Цикл for - сложение"
+    
+    @property
+    def get_subtype_num(self):
+        return 1
 
     @property
     def max_qty(self):
@@ -188,6 +196,10 @@ class SubtypeB(Type0):
 
     def category(self):
         return "Цикл for - вычитание"
+    
+    @property
+    def get_subtype_num(self):
+        return 2
 
     @property
     def max_qty(self):
@@ -271,6 +283,10 @@ class SubtypeC(Type0):
     
     def level(self):
         return "mid"
+    
+    @property
+    def get_subtype_num(self):
+        return 3
 
     @property
     def max_qty(self):
@@ -354,6 +370,10 @@ class SubtypeD(Type0):
     
     def level(self):
         return "mid"
+    
+    @property
+    def get_subtype_num(self):
+        return 4
 
     @property
     def max_qty(self):
@@ -438,6 +458,10 @@ class SubtypeE(Type0):
     
     def level(self):
         return "hard"
+    
+    @property
+    def get_subtype_num(self):
+        return 5
 
     @property
     def max_qty(self):
@@ -524,6 +548,10 @@ class SubtypeF(Type0):
     
     def level(self):
         return "hard"
+    
+    @property
+    def get_subtype_num(self):
+        return 6
 
     @property
     def max_qty(self):
@@ -613,6 +641,10 @@ class SubtypeG(Type0):
     
     def level(self):
         return "mid"
+    
+    @property
+    def get_subtype_num(self):
+        return 7
 
     @property
     def max_qty(self):

@@ -43,9 +43,71 @@ class ExportingThread(threading.Thread):
 		self.proglangs = proglangs
 		super().__init__()
 
-	def run(self):	
-		create_pdf(self)
+	def run(self):
+		if "pdf" in self.outputFilename:	
+			create_pdf(self)
+		elif "csv" in self.outputFilename:
+			create_csv(self)
 
+
+def create_csv(thread):
+	tid_lst = []
+	task_num_lst = []
+	type_num_lst = []
+	subtype_num_lst = []
+	task_html_lst = []
+	answer_lst = []
+
+	cnt = 0
+	thread.progress = 0
+	for subtype in thread.choice_lst:
+		task = subtype[0]
+		task_hashes = []
+		for _ in range(subtype[1]):
+			real_task = task()
+			if real_task.max_qty <= 100:
+				if real_task.max_qty <= len(task_hashes):
+					break
+			else:
+				if real_task.max_qty*0.8 <= len(task_hashes):
+					break
+			while (md5(real_task.question_text().encode()).hexdigest() in task_hashes):
+				real_task = task()
+			task_hashes.append(md5(real_task.question_text().encode()).hexdigest())
+
+			cnt += 1
+
+			text = real_task.question_text()
+			#выбор языков программирования
+			if thread.proglangs.get(task.__bases__[0].__bases__[0]().category(), None):
+				for lang in set(["python", "qbasic", "cpplus", "pascal", "algori"])-set(thread.proglangs[task.__bases__[0].__bases__[0]().category()]):
+					th_search = re.search(f"<th name='{lang}'[^~]*?</th>", text) or [""]
+					td_search = re.search(f"<td name='{lang}'[^~]*?</td>", text) or [""]
+					text = text.replace(th_search[0], "")
+					text = text.replace(td_search[0], "")
+
+			tid_lst.append(real_task.sha1(real_task.question_text()))
+			task_num_lst.append(real_task.get_task_num)
+			type_num_lst.append(real_task.get_type_num)
+			subtype_num_lst.append(real_task.get_subtype_num)
+			task_html_lst.append(text)
+			answer_lst.append(real_task.question_answer())
+		
+		from pandas import DataFrame
+
+		DataFrame.from_dict(
+			{
+				'tid': tid_lst,
+				'task': task_num_lst,
+				'type': type_num_lst,
+				'subtype': subtype_num_lst,
+				'question': task_html_lst,
+				'answer': answer_lst
+			}
+		).to_csv(thread.outputFilename, index=False)
+
+		while thread.progress < 100:
+				thread.progress += 1
 
 def create_pdf(thread):
 			html = """
