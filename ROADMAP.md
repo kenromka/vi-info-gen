@@ -2,6 +2,8 @@
 
 Финальный срок: `31.08.2019`
 
+Текущая версия находится [здесь](http://vi-info.herokuapp.com)
+
 ## Документация
 | Done | Task | Term | Status | Response |
 | ---- | ---- | ---- | ------ | -------- |
@@ -24,6 +26,6 @@
 | Done | Task | Term | Status | Response |
 | ---- | ---- | ---- | ------ | -------- |
 | <ul><li> [x] </li></ul> | Импортировать старый проект в текущий репозиторий | `07.07.2019` |  | [@kenromka]( https://github.com/kenromka ) |
-| <ul><li> [ ] </li></ul> | Добавить новый функционал для выгрузки в БД | `07-14.07.2019` |  | [@kenromka]( https://github.com/kenromka ) |
+| <ul><li> [x] </li></ul> | Добавить новый функционал для выгрузки в БД | `07-14.07.2019` |  | [@kenromka]( https://github.com/kenromka ) |
 | <ul><li> [ ] </li></ul> | Добавить новые задачи | После ревью [docs](./docs/tasks/oge) от [@viinformatika](https://github.com/viinformatika) | | [@kenromka]( https://github.com/kenromka ) |
 | <ul><li> [ ] </li></ul> | Ревью задач | `08.2019` |  | [@viinformatika](https://github.com/viinformatika) |
