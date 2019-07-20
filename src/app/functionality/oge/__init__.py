@@ -16,5 +16,3 @@ from .task15 import *
 from .task16 import *
 from .task17 import *
 from .task18 import *
-from .task19 import *
-from .task20 import *

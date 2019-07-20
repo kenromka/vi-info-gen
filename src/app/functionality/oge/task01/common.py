@@ -7,5 +7,9 @@ class Task1(BaseTaskOge):
         pass
 
     def category(self):
-        return "Задача 1"
+        return "Задание 1"
+    
+    @property
+    def get_task_num(self):
+        return 1
 

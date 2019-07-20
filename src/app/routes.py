@@ -66,7 +66,9 @@ def ege():
                         qt = qty[0]
                     results.append((dumpys[answer], int(qt)))
                 elif answer == "extension":
-                    extension = qty[0]
+                    extension = qty
+                    if isinstance(qty, (list, tuple)):
+                        extension = qty[0]
                 elif answer == "answers":
                     answers = qty
                     if isinstance(qty, (list, tuple)):
@@ -139,7 +141,9 @@ def oge():
                         qt = qty[0]
                     results.append((dumpys[answer], int(qt)))
                 elif answer == "extension":
-                    extension = qty[0]
+                    extension = qty
+                    if isinstance(qty, (list, tuple)):
+                        extension = qty[0]
                 elif answer == "answers":
                     answers = qty
                     if isinstance(qty, (list, tuple)):

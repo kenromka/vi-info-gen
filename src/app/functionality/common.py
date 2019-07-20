@@ -33,7 +33,7 @@ from random import randint
 class ExportingThread(threading.Thread):
 
 	def __init__(self, outputFilename, choice_lst, dic, typo, headers, answer, proglangs):
-		self.progress = 0
+		self.progress = 1
 		self.outputFilename = outputFilename
 		self.choice_lst = choice_lst
 		self.dic = dic
