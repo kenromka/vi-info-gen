@@ -6,5 +6,9 @@ class Task9(BaseTaskOge):
     def __init__(self):
         pass
     
+    @property
+    def get_task_num(self):
+        return 9
+
     def category(self):
         return "Задание 9"

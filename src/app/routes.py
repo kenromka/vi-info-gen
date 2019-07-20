@@ -12,10 +12,11 @@ from app import app
 
 import time
 
-last_update = "18.04.2019"
-DOWNLOAD_PATH = "/tmp/exam-tasks.pdf"
+last_update = "20.07.2019"
+DOWNLOAD_PATH = "/tmp/exam-tasks.{extension}"
+XTRAS_PATH = "/tmp/xtras/"
 
-exporting_threads = ExportingThread(DOWNLOAD_PATH, [], {}, "ОГЭ", True, "ans_yes", {})
+exporting_threads = ExportingThread(DOWNLOAD_PATH.format(extension='pdf'), [], {}, "ОГЭ", True, "ans_yes", {})
 
 @app.route("/index")
 @app.route("/")
@@ -56,12 +57,18 @@ def ege():
             headers = False
             answers = "ans_yes"
             proglangs = {}
+            global extension
+            extension = "pdf"
             for answer, qty in dict(request.form).items():
                 if answer in dumpys.keys():
                     qt = qty
                     if isinstance(qty, (list, tuple)):
                         qt = qty[0]
                     results.append((dumpys[answer], int(qt)))
+                elif answer == "extension":
+                    extension = qty
+                    if isinstance(qty, (list, tuple)):
+                        extension = qty[0]
                 elif answer == "answers":
                     answers = qty
                     if isinstance(qty, (list, tuple)):
@@ -84,7 +91,7 @@ def ege():
                 except Exception:
                     pass
 
-            exporting_threads = ExportingThread(DOWNLOAD_PATH, results, tasks, "ЕГЭ", headers, answers, proglangs)
+            exporting_threads = ExportingThread(DOWNLOAD_PATH.format(extension=extension), results, tasks, "ЕГЭ", headers, answers, proglangs)
             exporting_threads.start()
 
             return redirect(url_for("generate", task_id=thread_id))
@@ -125,12 +132,18 @@ def oge():
             headers = False
             answers = "ans_yes"
             proglangs = {}
+            global extension
+            extension = "pdf"
             for answer, qty in dict(request.form).items():
                 if answer in dumpys.keys():
                     qt = qty
                     if isinstance(qty, (list, tuple)):
                         qt = qty[0]
                     results.append((dumpys[answer], int(qt)))
+                elif answer == "extension":
+                    extension = qty
+                    if isinstance(qty, (list, tuple)):
+                        extension = qty[0]
                 elif answer == "answers":
                     answers = qty
                     if isinstance(qty, (list, tuple)):
@@ -145,7 +158,7 @@ def oge():
             
             thread_id = randint(1, 1000)
             #PROBLEM OF KILLING THREAD
-            exporting_threads = ExportingThread(DOWNLOAD_PATH, results, tasks, "ОГЭ", headers, answers, proglangs)
+            exporting_threads = ExportingThread(DOWNLOAD_PATH.format(extension=extension), results, tasks, "ОГЭ", headers, answers, proglangs)
             exporting_threads.start()
 
             return redirect(url_for("generate", task_id=thread_id))
@@ -154,7 +167,40 @@ def oge():
 @app.route("/download", methods=["GET"])
 def download():
     try:
-        return send_file(DOWNLOAD_PATH, as_attachment=True, mimetype="application/pdf", cache_timeout=-1)
+        if extension == 'pdf':
+            return send_file(
+                DOWNLOAD_PATH.format(extension=extension), 
+                as_attachment=True, 
+                mimetype="application/pdf", 
+                cache_timeout=-1
+            )
+        elif extension == 'csv':
+
+            from .functionality.tools.zippy import zippify, check_folder, touch_folder
+            
+            if touch_folder(XTRAS_PATH) and not check_folder(XTRAS_PATH):
+                zippify(XTRAS_PATH, "/tmp/archives/exam-tasks.zip")
+                
+                from zipfile import ZipFile
+                zf = ZipFile('/tmp/archives/exam-tasks.zip', mode='a')
+                zf.write(DOWNLOAD_PATH.format(extension=extension))
+                zf.close()
+
+                return send_file(
+                    '/tmp/archives/exam-tasks.zip', 
+                    as_attachment=True, 
+                    mimetype="application/zip", 
+                    cache_timeout=-1
+                )
+            else: 
+                return send_file(
+                    DOWNLOAD_PATH.format(extension=extension), 
+                    as_attachment=True, 
+                    mimetype="text/csv", 
+                    cache_timeout=-1
+                )
+        else:
+            return '{"message": "wrong file format: {e}"}, 400'.format(e=e)
     except Exception as e:
         return '{"message": "error with file downloading: {e}"}, 400'.format(e=e)
 

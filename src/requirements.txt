@@ -7,10 +7,14 @@ itsdangerous==1.1.0
 Jinja2==2.10
 MarkupSafe==1.1.0
 mpmath==1.1.0
+numpy==1.16.4
+pandas==0.25.0
 pdfkit==0.6.1
 Pillow==5.4.1
 PyPDF2==1.26.0
+python-dateutil==2.8.0
 python-pdf==0.36
+pytz==2019.1
 reportlab==3.5.13
 six==1.12.0
 sympy==1.3

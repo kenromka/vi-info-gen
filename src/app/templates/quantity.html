@@ -8,6 +8,9 @@
     div#type {
       margin-left:5em;
     }
+    .deactive {
+        display: inline;
+    }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script>
@@ -186,13 +189,29 @@
           
         });
 </script>
+<script type="text/javascript">
+    function hideAllBlock() {
+        document.getElementById('pdf').style.display = 'none';
+    }
+
+    function Selected(a) {
+        hideAllBlock();
+        document.getElementById(a.value).style.display = 'block';
+    }
+</script>
 <form id="quantity" action="" method="post" role="form">
         <div>Общее количество: <input id="head" type="text" value="0" onkeypress="allowNumbersOnly(event)"></div>
         <hr>
-        <div>Ответы: <input value="ans_yes" name='answers' type="radio" checked>Да <input value="ans_no" name='answers' type="radio">Нет <input value="ans_end" name='answers' type="radio">В конце</div>
+        <div>Формат выходного файла: <p><input name="extension" type="radio" value="pdf" checked onchange="Selected(this)"> PDF </p>
+                                     <p><input name="extension" type="radio" value="csv" onchange="Selected(this)"> CSV </p>
+        </div>
         <hr>
-        <div>Заголовки нужны: <input name="headers" type="checkbox" checked></div>
-        <hr>
+        <div class="deactive" id="pdf"> 
+            <div>Ответы: <input value="ans_yes" name='answers' type="radio" checked>Да <input value="ans_no" name='answers' type="radio">Нет <input value="ans_end" name='answers' type="radio">В конце</div>
+            <hr>
+            <div>Заголовки нужны: <input name="headers" type="checkbox" checked></div>
+            <hr>
+        </div>
         {% for task, task_dict in tasks.items() %}
             <div id="task">&sect; <label>{{ task }}</label><input class="task" type="text" value="0" onkeypress="allowNumbersOnly(event)">
                 {%if "proglang" in task_dict[1] %}
