@@ -89,3 +89,6 @@ class SubtypeA(Type0):
     @property
     def max_qty(self):
         return 5000
+    
+    def stepik_jsonify(self):
+        return self.jsonify_basic_text()

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!--enctype="multipart/form-data"-->
+    <form id="upload" enctype="multipart/form-data" action="" method="post" role="form">
+        <div>Client ID <input name="client" id="head" type="text" value="" autocomplete="on"></div>
+        <hr>
+        <div>Client Secret <input name="secret" id="head" type="text" value="" autocomplete="on"></div>
+        <hr>
+        <div>Lesson ID <input name="lesson" id="head" type="text" value="" autocomplete="off"></div>
+        <hr>
+        <div>Использовать прошлый сгенерированный файл <p><input name="extension" type="checkbox" value="last_step"> </p>
+            <input type="file" name="stepik_step" accept="json">
+        </div>
+        <hr>
+        <input type="submit" name="btn" value="Выгрузить">
+    </form>
+{% endblock %}

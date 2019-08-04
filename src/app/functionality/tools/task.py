@@ -81,6 +81,28 @@ class BaseTask:
 	def level():
 		return "ez"
 
+	def jsonify_basic_text(self):
+		return {
+				"text": self.question_text(),
+				"name":"string",
+				"video": None,
+				"animation": None,
+				"options": None,
+				"source": {
+					"pattern": self.question_answer(),
+					"use_re": False,
+					"match_substring": False,
+					"case_sensitive": False,
+					"code": "# def check(reply):\n#     \"\"\"Evaluate the learner's reply.\n#\n#     It should return 1 or True for the correct reply and 0 or False\n#     for the incorrect one.\n#\n#     A partial solution may be scored using a float number from the\n#     interval (0, 1). In such a case the learner total score for the\n#     problem will be 'step cost' * 'score'.\n#\n#     :param reply: a string that is the learner's reply to the problem\n#     :return: a score number (int or float) in range [0, 1]\n#\n#     \"\"\"\n#     return reply == \"Hello\"\n\n# def solve():\n#     \"\"\"Return a correct reply. This function is *optional*.\n#\n#     It is used to test the correctness of the 'check' function.\n#\n#     :return: a string that is a correct reply to the problem\n#\n#     \"\"\"\n#     return \"Hello\"",
+					"is_text_disabled": False,
+					"is_file_disabled": True
+				}
+			}
+
+	@abstractmethod
+	def stepik_jsonify(self):
+		pass
+
 
 class BaseTaskOge:
 	"""Базовый класс для задач ОГЭ"""
@@ -159,4 +181,24 @@ class BaseTaskOge:
 	def level():
 		return "ez"
 
+	def jsonify_basic_text(self):
+		return {
+				"text": self.question_text(),
+				"name":"string",
+				"video": None,
+				"animation": None,
+				"options": None,
+				"source": {
+					"pattern": self.question_answer(),
+					"use_re": False,
+					"match_substring": False,
+					"case_sensitive": False,
+					"code": "# def check(reply):\n#     \"\"\"Evaluate the learner's reply.\n#\n#     It should return 1 or True for the correct reply and 0 or False\n#     for the incorrect one.\n#\n#     A partial solution may be scored using a float number from the\n#     interval (0, 1). In such a case the learner total score for the\n#     problem will be 'step cost' * 'score'.\n#\n#     :param reply: a string that is the learner's reply to the problem\n#     :return: a score number (int or float) in range [0, 1]\n#\n#     \"\"\"\n#     return reply == \"Hello\"\n\n# def solve():\n#     \"\"\"Return a correct reply. This function is *optional*.\n#\n#     It is used to test the correctness of the 'check' function.\n#\n#     :return: a string that is a correct reply to the problem\n#\n#     \"\"\"\n#     return \"Hello\"",
+					"is_text_disabled": False,
+					"is_file_disabled": True
+				}
+			}
 
+	@abstractmethod
+	def stepik_jsonify(self):
+		pass

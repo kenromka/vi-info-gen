@@ -2,6 +2,7 @@ from flask import render_template, request, redirect, url_for, send_file, Respon
 
 from .functionality.common import *
 from .functionality.tools.task import *
+from .functionality.tools.stepik_upload import *
 
 from .functionality.ege import *
 from .functionality.oge import *
@@ -12,7 +13,7 @@ from app import app
 
 import time
 
-last_update = "20.07.2019"
+last_update = "04.08.2019"
 DOWNLOAD_PATH = "/tmp/exam-tasks.{extension}"
 XTRAS_PATH = "/tmp/xtras/"
 
@@ -199,8 +200,31 @@ def download():
                     mimetype="text/csv", 
                     cache_timeout=-1
                 )
+        elif extension == 'json':
+            from .functionality.tools.zippy import zippify, check_folder, touch_folder
+            
+            if touch_folder(XTRAS_PATH) and not check_folder(XTRAS_PATH):
+                zippify(XTRAS_PATH, "/tmp/archives/exam-tasks.zip")
+                
+                from zipfile import ZipFile
+                zf = ZipFile('/tmp/archives/exam-tasks.zip', mode='a')
+                zf.write(DOWNLOAD_PATH.format(extension=extension))
+                zf.close()
+
+                return send_file(
+                    '/tmp/archives/exam-tasks.zip', 
+                    as_attachment=True, 
+                    mimetype="application/zip", 
+                    cache_timeout=-1
+                )
+            return send_file(
+                DOWNLOAD_PATH.format(extension=extension), 
+                as_attachment=True, 
+                mimetype="text/json", 
+                cache_timeout=-1
+            )
         else:
-            return '{"message": "wrong file format: {e}"}, 400'.format(e=e)
+            return '{"message": "wrong file format: {e}"}, 400'.format(e=extension)
     except Exception as e:
         return '{"message": "error with file downloading: {e}"}, 400'.format(e=e)
 
@@ -217,5 +241,39 @@ def progress(thread_id):
             time.sleep(randint(1, 3))
         return str(exporting_threads.progress)
     return "100"
+
+@app.route("/stepik-upload", methods=["GET", "POST"])
+def stepik_upload():
+    if request.method == 'POST':
+        if request.form["btn"] == "Выгрузить":
+
+            get_item = lambda x: x[0] if isinstance(x, (list, tuple)) else x
+
+            file_flg = True
+            
+            for k, v in dict(request.form).items():
+                if k == "client":
+                    client_id = get_item(v)
+                elif k == "secret":
+                    client_secret = get_item(v)
+                elif k == "lesson":
+                    lesson_id = int(get_item(v))
+                elif k == "extension" and get_item(v) == "last_step":
+                    file_flg = False
+                elif k == "btn":
+                    pass
+                else:
+                    ValueError("Wat did u send me????")
+            
+            if file_flg:
+                file = request.files.get('stepik_step')      
+                data = file.read()
+            
+            import json
+            data = json.loads(data)
+            for i, k in enumerate(data):
+                link = upload2lesson(client_id, client_secret, lesson_id, i+1, data.get(k))
+            redirect(link)
+    return render_template("stepik-upload.html", date=last_update)
 
 ##xtra
