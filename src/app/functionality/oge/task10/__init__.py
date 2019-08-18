@@ -4,3 +4,5 @@ from . import type1
 from . import type2
 from . import type3
 from . import type4
+from . import type5
+from . import type6

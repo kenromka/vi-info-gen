@@ -189,7 +189,7 @@ class BaseTaskOge:
 				"animation": None,
 				"options": None,
 				"source": {
-					"pattern": self.question_answer(),
+					"pattern": str(self.question_answer()),
 					"use_re": False,
 					"match_substring": False,
 					"case_sensitive": False,

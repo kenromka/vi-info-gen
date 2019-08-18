@@ -11,4 +11,4 @@ class Task9(BaseTaskOge):
         return 9
 
     def category(self):
-        return "Задание 9"
+        return "Задача 9"

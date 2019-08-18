@@ -78,6 +78,7 @@ def create_step(thread):
 			cnt += 1
 
 			text = json.dumps(real_task.stepik_jsonify())
+			
 			#выбор языков программирования
 			if thread.proglangs.get(task.__bases__[0].__bases__[0]().category(), None):
 				for lang in set(["python", "qbasic", "cpplus", "pascal", "algori"])-set(thread.proglangs[task.__bases__[0].__bases__[0]().category()]):
@@ -91,7 +92,7 @@ def create_step(thread):
 
 		result = dict(zip(tid_lst, task_html_lst))
 		with open(thread.outputFilename, 'w', encoding='utf-8') as f:
-			json.dump(result, f, ensure_ascii=False, indent=4)
+			json.dump(result, f, ensure_ascii=True, indent=4)
 
 		while thread.progress < 100:
 				thread.progress += 1

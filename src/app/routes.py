@@ -13,7 +13,7 @@ from app import app
 
 import time
 
-last_update = "04.08.2019"
+last_update = "17.08.2019"
 DOWNLOAD_PATH = "/tmp/exam-tasks.{extension}"
 XTRAS_PATH = "/tmp/xtras/"
 
@@ -273,7 +273,7 @@ def stepik_upload():
             data = json.loads(data)
             for i, k in enumerate(data):
                 link = upload2lesson(client_id, client_secret, lesson_id, i+1, data.get(k))
-            redirect(link)
+            return redirect(link)
     return render_template("stepik-upload.html", date=last_update)
 
 ##xtra

@@ -9,3 +9,10 @@ class Task10(BaseTaskOge):
     
     def category(self):
         return "Задание 10"
+    
+    def stepik_jsonify(self):
+        return self.jsonify_basic_text()
+    
+    @property
+    def max_qty(self):
+        return 5000

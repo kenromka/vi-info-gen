@@ -17,13 +17,13 @@ class Type1(Task10):
         "В таблице Dat представлены данные о количестве голосов, поданных за {length} исполнителей народных"\
         " песен (Dat[1] – количество голосов, поданных за первого исполнителя; Dat[2] – за второго и т. д.)."\
         " Определите, какое число будет напечатано в результате работы следующей программы. "\
-        "Текст программы приведён на пяти языках программирования.{table}"])[0]
+        "Текст программы приведён на пяти языках программирования.<br>{table}"])[0]
         
     def category(self):
-        return "Поиск максимума"
+        return "Анализ алгоритмов - Поиск максимума"
     
     def level(self):
-        return "hard"
+        return "mid"
 
 class SubtypeA(Type1):
     """Максимум"""
@@ -148,6 +148,10 @@ class SubtypeA(Type1):
     @property
     def max_qty(self):
         return 5000
+
+    @property
+    def get_subtype_num(self):
+        return 1
 
 class SubtypeB(Type1):
     """Номер максимума"""
@@ -282,3 +286,7 @@ class SubtypeB(Type1):
     @property
     def max_qty(self):
         return 5000
+
+    @property
+    def get_subtype_num(self):
+        return 2
