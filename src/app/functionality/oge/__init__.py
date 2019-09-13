@@ -13,6 +13,6 @@ from .task12 import *
 from .task13 import *
 from .task14 import *
 from .task15 import *
-from .task16 import *
-from .task17 import *
-from .task18 import *
+from .task15_2 import *
+from .zzz_old_task08 import *
+from .zzz_old_task10 import *

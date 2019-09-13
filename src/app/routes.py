@@ -13,7 +13,7 @@ from app import app
 
 import time
 
-last_update = "17.08.2019"
+last_update = "13.09.2019"
 DOWNLOAD_PATH = "/tmp/exam-tasks.{extension}"
 XTRAS_PATH = "/tmp/xtras/"
 
@@ -109,8 +109,8 @@ def oge():
     for task in BaseTaskOge.__subclasses__():
         real_task = task()
         tasks[real_task.category()] = ({},                  ["proglang" if real_task.category() in (
-                                                                                                        "Задание 9", 
-                                                                                                        "Задание 10"
+                                                                                                        "Задание 9, 10 OLD", 
+                                                                                                        "Задание 6"
                                                                                                     ) else set()])
         for typo in task.__subclasses__():
             real_typo = typo()

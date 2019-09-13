@@ -25,8 +25,10 @@ def upload2lesson(client_id, client_secret, lesson_id, position, data):
         }
     }
 
+    # print(json.dumps(full_data, indent=4))
+
     r = requests.post(api_url, headers={'Authorization': 'Bearer '+ token}, json=full_data)
-    #print(r.text)
+    # print(r.json())
 
     step_id = r.json()['step-sources'][0]['id']
     return step_url.format(

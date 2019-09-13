@@ -198,6 +198,32 @@ class BaseTaskOge:
 					"is_file_disabled": True
 				}
 			}
+	
+	def jsonify_code(self, time_lim=5, mem_lim=256, samples=1, user_code=True):
+		return {
+				"text": self.question_text(),
+				"name":"code",
+				"video": None,
+				"animation": None,
+				"options": {
+					"execution_time_limit": time_lim,
+					"execution_memory_limit": mem_lim
+				},
+				"source": {
+					"execution_time_limit": time_lim,
+					"execution_memory_limit": mem_lim,
+					"code": "\n".join([self._generate, self._check, self._solve]),
+					"samples_count": samples,
+					"test_archive": [],
+					"is_time_limit_scaled": True,
+					"is_memory_limit_scaled": True,
+					"templates_data": "",
+					"is_run_user_code_allowed": user_code,
+					"manual_time_limits": [],
+					"manual_memory_limits": [],
+					"test_cases": []
+				}
+			}
 
 	@abstractmethod
 	def stepik_jsonify(self):

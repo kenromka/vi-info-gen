@@ -7,4 +7,4 @@ class Task6(BaseTaskOge):
         pass
     
     def category(self):
-        return "Задача 6"
+        return "Задание 6"

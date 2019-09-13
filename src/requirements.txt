@@ -1,6 +1,7 @@
 certifi==2019.6.16
 chardet==3.0.4
 Click==7.0
+decorator==4.4.0
 Flask==1.0.2
 Flask-WTF==0.14.2
 gunicorn==19.9.0
@@ -10,6 +11,7 @@ itsdangerous==1.1.0
 Jinja2==2.10
 MarkupSafe==1.1.0
 mpmath==1.1.0
+networkx==2.3
 numpy==1.16.4
 pandas==0.25.0
 pdfkit==0.6.1
