@@ -13,7 +13,7 @@ from app import app
 
 import time
 
-last_update = "02.11.2019"
+last_update = "16.11.2019"
 DOWNLOAD_PATH = "/tmp/exam-tasks.{extension}"
 XTRAS_PATH = "/tmp/xtras/"
 

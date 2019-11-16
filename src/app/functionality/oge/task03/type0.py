@@ -20,16 +20,17 @@ class Type0(Task3):
 
 class SubtypeA(Type0):
     """Истинность высказывания - просто число - Истинно"""
-    def __init__(self):
-        super().__init__()
-
-        self.question = """
-        Напишите число <i>{var}</i>, для которого истинно высказывание: 
+    question = """
+    Напишите {minmax} {capacity} число <i>{var}</i>, для которого истинно высказывание: 
 <br>
 <code>
-<b>{oper1}</b> (<i>{var}</i> {expr1}) <b>{oper}</b> <b>{oper2}</b> (<i>{var}</i> {expr2})
+<b>{oper1}</b> ({costyl1}<i>{var}</i> {expr1}) <b> {oper} </b> <b>{oper2}</b> ({costyl2}<i>{var}</i> {expr2}) 
 </code>
-        """
+    """
+    _minmax, _costyl1, _costyl2, _capacity = [""]*4
+
+    def __init__(self):
+        # super().__init__()
 
 
 #===========================================================================
@@ -124,6 +125,10 @@ class SubtypeA(Type0):
     def question_text(self):
         return self.question.format(
             var=self._var,
+            capacity="",
+            costyl1="",
+            costyl2="",
+            minmax="",
             oper=self._oper,
             oper1=self._oper1,
             oper2=self._oper2,
@@ -151,16 +156,16 @@ class SubtypeA(Type0):
 
 class SubtypeB(Type0):
     """Истинность высказывания - просто число - ложно"""
-    def __init__(self):
-        super().__init__()
-
-        self.question = """
-        Напишите число <i>{var}</i>, для которого ложно высказывание: 
+    question = """
+    Напишите {minmax} {capacity} число <i>{var}</i>, для которого ложно высказывание: 
 <br>
 <code>
-<b>{oper1}</b> (<i>{var}</i> {expr1}) <b>{oper}</b> <b>{oper2}</b> (<i>{var}</i> {expr2})
+<b>{oper1}</b> ({costyl1}<i>{var}</i> {expr1}) <b> {oper} </b> <b>{oper2}</b> ({costyl2}<i>{var}</i> {expr2}) 
 </code>
-        """
+    """
+    _minmax, _costyl1, _costyl2, _capacity = [""]*4
+    def __init__(self):
+        # super().__init__()
 
 
 #===========================================================================
@@ -255,6 +260,10 @@ class SubtypeB(Type0):
     def question_text(self):
         return self.question.format(
             var=self._var,
+            costyl1="",
+            minmax="",
+            costyl2="",
+            capacity="",
             oper=self._oper,
             oper1=self._oper1,
             oper2=self._oper2,
